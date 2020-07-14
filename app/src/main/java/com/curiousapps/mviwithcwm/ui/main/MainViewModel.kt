@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import com.curiousapps.mviwithcwm.model.BlogPost
+import com.curiousapps.mviwithcwm.model.User
 import com.curiousapps.mviwithcwm.ui.main.state.MainStateEvent
 import com.curiousapps.mviwithcwm.ui.main.state.MainStateEvent.*
 import com.curiousapps.mviwithcwm.ui.main.state.MainViewState
@@ -39,4 +41,35 @@ class MainViewModel: ViewModel() {
             }
         }
     }
+
+    fun getCurrentViewStateOrNew(): MainViewState{
+        //inline variable with return
+        return viewState.value?.let {
+            it
+        }?: MainViewState()
+        /**
+         *     long code NOT inline
+        val value = viewState.value?.let {
+        it
+        }?: MainViewState()
+        return value
+         */
+    }
+
+    fun setBlogListData(blogPosts: List<BlogPost>){
+        val update = getCurrentViewStateOrNew()
+        update.blogPosts = blogPosts
+        mViewState.value = update
+    }
+
+    fun setUser(user: User){
+        val update = getCurrentViewStateOrNew()
+        update.user = user
+        mViewState.value  = update
+    }
+
+    fun setStateEvent(event: MainStateEvent){
+        mStateEvent.value = event
+    }
+
 }
