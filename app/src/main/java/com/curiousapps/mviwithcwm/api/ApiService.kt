@@ -1,7 +1,9 @@
 package com.curiousapps.mviwithcwm.api
 
+import androidx.lifecycle.LiveData
 import com.curiousapps.mviwithcwm.model.BlogPost
 import com.curiousapps.mviwithcwm.model.User
+import com.curiousapps.mviwithcwm.util.GenericApiResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 
@@ -10,9 +12,9 @@ interface ApiService {
     @GET("placeholder/user/{userId}")
     fun getUser(
         @Path("userId") userId: String
-    ): User
+    ): LiveData<GenericApiResponse<User>>
 
     @GET("placeholder/blogs")
-    fun getBlogPosts(): List<BlogPost>
+    fun getBlogPosts(): LiveData<GenericApiResponse<List<BlogPost>>>
 
 }

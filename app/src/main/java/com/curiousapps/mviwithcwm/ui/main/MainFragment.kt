@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.curiousapps.mviwithcwm.R
 import com.curiousapps.mviwithcwm.ui.main.state.MainStateEvent
 import com.curiousapps.mviwithcwm.ui.main.state.MainStateEvent.*
+import com.curiousapps.mviwithcwm.util.DataState
 import java.lang.Exception
 
 class MainFragment: Fragment(){
@@ -31,17 +32,30 @@ class MainFragment: Fragment(){
         subscribeObservers()
     }
 
-    fun subscribeObservers(){
+    private fun subscribeObservers(){
         viewModel.dataState.observe(viewLifecycleOwner, Observer { dataState->
-            println("**DEBUG: DataState: ${dataState}")
-            dataState.blogPosts?.let { blogPosts ->
-                //Set BlogPost data
-                viewModel.setBlogListData(blogPosts)
+            println("**DEBUG: DataState: $dataState")
+            //Handle data
+            dataState.data?.let {mainViewState ->
+                mainViewState.blogPosts?.let { blogPosts ->
+                    //Set BlogPost data
+                    viewModel.setBlogListData(blogPosts)
+                }
+                mainViewState.user?.let { user ->
+                    //Set user Data
+                    viewModel.setUser(user)
+                }
             }
-            dataState.user?.let { user ->
-                //Set user Data
-                viewModel.setUser(user)
+
+            //Handle Error
+            dataState.message?.let {
+
             }
+            //Handle loading
+            dataState.loading.let {
+
+            }
+
         })
 
         viewModel.viewState.observe(viewLifecycleOwner, Observer { viewState->
